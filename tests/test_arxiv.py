@@ -3,37 +3,35 @@ from unittest.mock import MagicMock, patch
 import pytest
 from litmap.arxiv import Paper, _parse_feed, fetch_papers, fetch_by_id
 
-SAMPLE_FEED = '''
+SAMPLE_FEED = '''<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <entry>
+    <id>http://arxiv.org/abs/2310.00001v1</id>
+    <title>Attention Is All You Need Redux</title>
+    <summary>We revisit the transformer architecture for language tasks.</summary>
+    <published>2023-10-01T00:00:00Z</published>
+    <updated>2023-10-05T00:00:00Z</updated>
+    <author><name>Alice Smith</name></author>
+    <author><name>Bob Jones</name></author>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <arxiv:doi>10.1234/test.001</arxiv:doi>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2310.00002v1</id>
+    <title>Graph Neural Networks for Chemistry</title>
+    <summary>GNNs for molecular property prediction in drug discovery.</summary>
+    <published>2023-10-02T00:00:00Z</published>
+    <updated>2023-10-02T00:00:00Z</updated>
+    <author><name>Carol Lee</name></author>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+  </entry>
+</feed>'''
 
-  
-    http://arxiv.org/abs/2310.00001v1
-    
-    
-We revisit the transformer architecture for language tasks.
-
-    2023-10-01T00:00:00Z
-    2023-10-05T00:00:00Z
-    Alice Smith
-    Bob Jones
-    
-    
-    10.1234/test.001
-  
-  
-    http://arxiv.org/abs/2310.00002v1
-    
-    
-GNNs for molecular property prediction in drug discovery.
-
-    2023-10-02T00:00:00Z
-    2023-10-02T00:00:00Z
-    Carol Lee
-    
-  
-'''
-
-EMPTY_FEED = '''
-'''
+EMPTY_FEED = '''<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+</feed>'''
 
 
 def test_parse_count():
